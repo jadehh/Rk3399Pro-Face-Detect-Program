@@ -441,7 +441,7 @@ def init_pnet():
     i=0
     list = []
     for i in range(9):
-        rknn_name = "PNet_%d_%d.rknn" %(PNET_PYRAMID[i][0],PNET_PYRAMID[i][1]);
+        rknn_name = "models/PNet_%d_%d.rknn" %(PNET_PYRAMID[i][0],PNET_PYRAMID[i][1]);
         pnet_rknn = RKNN() #verbose=True,verbose_file='./mobilenet_build.log'
         pnet_rknn.load_rknn(rknn_name)
         ret = pnet_rknn.init_runtime()
@@ -459,8 +459,8 @@ def load_parms():
     pnet_rknn_list = init_pnet()
     rnet_rknn = RKNN()
     onet_rknn = RKNN()
-    rnet_rknn.load_rknn('./RNet.rknn')
-    onet_rknn.load_rknn('./ONet.rknn')
+    rnet_rknn.load_rknn('models/RNet.rknn')
+    onet_rknn.load_rknn('models/ONet.rknn')
     ret = rnet_rknn.init_runtime()
     if ret != 0:
         print('Init rnet runtime environment failed')
