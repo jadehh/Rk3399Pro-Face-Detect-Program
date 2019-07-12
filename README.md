@@ -30,5 +30,9 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ```
 date -R
 ```
+4. 关闭锁屏 
+```
+在首选项中，打开屏幕保护程序，Mode 选择 Disable Screen Saver
+```
 
 
