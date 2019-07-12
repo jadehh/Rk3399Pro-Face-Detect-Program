@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import sys
+
 from rknn.api import RKNN
 #import _init_paths
 import cv2
@@ -212,9 +214,32 @@ def drawBoxes(im, boxes):
     y1 = boxes[:,1]
     x2 = boxes[:,2]
     y2 = boxes[:,3]
+    cut_y1 = [int(y1[0]),0][int(y1[0])<0]
+    cut_y2 = [int(y2[0]),0][int(y2[0])<0]
+    cut_x1 = [int(x1[0]),0][int(x1[0])<0]
+    cut_x2 =  [int(x2[0]),0][int(x2[0])<0]
+    width = cut_x2 - cut_x1
+    height = cut_y2 - cut_y1
+
+    if width < 200:
+        if cut_x1-100 < 0:
+            cut_x1 = 0
+        else:
+            cut_x1 = cut_x1 - 100
+        cut_x2 = cut_x2 + 100
+    if height < 200:
+        if cut_y1-100 < 0:
+            cut_y1 = 0
+        else:
+            cut_y1 = cut_y1 - 100
+        cut_y2 = cut_y2 + 100
+
+    face_img = im.copy()
+    face_img = face_img[cut_y1:cut_y2,cut_x1:cut_x2,:]
+
     for i in range(x1.shape[0]):
         cv2.rectangle(im, (int(x1[i]), int(y1[i])), (int(x2[i]), int(y2[i])), (0,255,0), 1)
-    return im
+    return im,face_img
 
 from time import time
 _tstart_stack = []
@@ -427,13 +452,36 @@ def init_pnet():
         list.append(pnet_rknn)
     return list
 
-def detect(img,minsize,pnet_rknn_list, rnet_rknn, onet_rknn, threshold,
-                                        factor):
-    img = cv2.resize(img,(450,344))
-    img_matlab = img.copy()
-    print("capture--------------------")
-    # check rgb position
-    boundingboxes, points = detect_face(img_matlab, minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, False,
+def load_parms():
+    minsize = 20
+    threshold = [0.6, 0.7, 0.7]
+    factor = 0.709
+    pnet_rknn_list = init_pnet()
+    rnet_rknn = RKNN()
+    onet_rknn = RKNN()
+    rnet_rknn.load_rknn('./RNet.rknn')
+    onet_rknn.load_rknn('./ONet.rknn')
+    ret = rnet_rknn.init_runtime()
+    if ret != 0:
+        print('Init rnet runtime environment failed')
+        exit(ret)
+    ret = onet_rknn.init_runtime()
+    if ret != 0:
+        print('Init onet runtime environment failed')
+        exit(ret)
+    # error = []
+    # f = open(imglistfile, 'r')
+    sys.stdout = open('/dev/stdout', 'w')
+    sys.stderr = open('/dev/stderr', 'w')
+    print("参数初始化完成")
+    return minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, factor
+
+def detect(image, minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, factor):
+    boundingboxes, points = detect_face(image, minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, False,
                                         factor)
-    img = drawBoxes(img, boundingboxes)
-    return img
+    return boundingboxes,points
+
+if __name__ == '__main__':
+    minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold,factor = load_parms()
+    image = cv2.imread("image/154.jpg")
+    detect(image,minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, factor)

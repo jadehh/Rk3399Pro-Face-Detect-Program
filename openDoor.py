@@ -1,45 +1,30 @@
-import sys
-import time
+import os
+
 class OpenDoor():
     def __init__(self):
         # 注册5号io
-        with open("/sys/class/gpio/export", "w") as f:
-            print("注册5号IO")
-            f.write(str(5))
-            f.close()
-
-        # 注册5号io为输出
-        with open("/sys/class/gpio/gpio5/direction", "w") as f:
-            print("注册5号IO为输出")
-            f.write("out")
-            f.close()
-
-        self.close()
+        self.destory()
+        print("申请控制5号IO")
+        os.system("sudo sh - c 'echo 5 > /sys/class/gpio/export'")
+        os.system("sudo sh - c  'echo out > /sys/class/gpio/gpio5/direction'")
 
     def open(self):
         # 注册5号io为输出高电平
-        with open("/sys/class/gpio/gpio5/value", "w") as f:
-            print("注册5号IO输出为高电平")
-            f.write(str(1))
-            time.sleep(1)
-            f.close()
-        self.close()
+        print("设置5号IO输出高电平")
+        os.system("sudo sh - c  'echo 1 > /sys/class/gpio/gpio5/value'")
 
     def close(self):
-        with open("/sys/class/gpio/gpio5/value", "w") as f:
-            print("注册5号IO输出为低电平")
-            f.write(str(0))
-            f.close()
+        print("注册5号IO输出为低电平")
+        os.system("sudo sh - c  'echo 0 > /sys/class/gpio/gpio5/value'")
 
     def destory(self):
         # 销毁5号io
-        with open("/sys/class/gpio/unexport", "w") as f:
-            print("销毁5号")
-            f.write(str(5))
-            f.close()
+        print("销毁5号IO")
+        os.system("sudo sh - c  'echo 5 > /sys/class/gpio/unexport'")
 
 
 if __name__ == '__main__':
     openDoor = OpenDoor()
     openDoor.open()
+    
 

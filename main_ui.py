@@ -20,9 +20,19 @@ class Ui_TabWidget(object):
         widgetW, widgetH = getWindowSize()
         textFont = QFont("Microsoft YaHei",55)
 
-        pal =QtGui.QPalette(self.palette())
-        pal.setBrush(QtGui.QPalette.Background,QtGui.QBrush(QtGui.QPixmap("sources/bg.png")))
-        self.setPalette(pal)
+        backgroundLabel = QLabel("",self)
+        backgroundLabel.setGeometry(100,0,1420,1080)
+        pixmap = QPixmap("sources/bg.png")
+        pixmap.scaled(1420,1080, Qt.IgnoreAspectRatio)
+        backgroundLabel.setPixmap(pixmap)
+
+        backgroundLabel2 = QLabel("",self)
+        backgroundLabel2.setGeometry(0,0,1420,1080)
+        pixmap2 = QPixmap("sources/bg.png")
+        pixmap2.scaled(100,1080, Qt.IgnoreAspectRatio)
+        backgroundLabel2.setPixmap(pixmap2)
+
+
 
         logoLabel = QLabel("",self)
         logoLabel.move(100,98)
@@ -33,16 +43,18 @@ class Ui_TabWidget(object):
         logoLabel.setPixmap(logoPixmap)
 
 
-        Widget.cameraprocessing()
 
+        self.setCacheImage()
         self.timeLabel = QLabel("", self)
-        self.timeLabel.setGeometry(1647,99,174,56)
+        self.timeLabel.setGeometry(1680,90,184,70)
         self.timeLabel.setFont(textFont)
         self.timeLabel.setStyleSheet("color:#A38C62;")
         self.timeLabel.setAlignment(Qt.AlignCenter)
 
+
+
         self.dayLabel = QLabel("", self)
-        self.dayLabel.setGeometry(1500,136,131,17)
+        self.dayLabel.setGeometry(1500,126,180,40)
         self.dayLabel.setStyleSheet("color:#A38C62;")
         self.dayLabel.setFont(QFont("Microsoft YaHei",15))
         self.dayLabel.setAlignment(Qt.AlignRight)
@@ -58,23 +70,22 @@ class Ui_TabWidget(object):
 
 
 
-        self.setCacheImage()
+
         self.setGeometry(0, 0, widgetW*1, widgetH*1)
 
         self.setWindowTitle('人脸检测窗口')
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.MSWindowsFixedSizeDialogHint)
         # self.setWindowFlags(Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint)
         self.show()
-
+        Widget.cameraprocessing()
 
 
     def setCacheImage(self):
         widgetW, widgetH = getWindowSize()
-        self.ImageLabelArr = []
-        for i in range(7):
-            self.resultWidget = ResultWidget(self)
-            self.resultWidget.setGeometry(1555, 212+105*i, 345, 84)
-            self.ImageLabelArr.append(self.resultWidget)
+        self.resultWidget = ResultWidget(self)
+        self.resultWidget.setGeometry(1420,0, 540, 1080)
+
+
 
     def showtime(self):
         dayString,timeString = self.GetTime()

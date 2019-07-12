@@ -1,7 +1,17 @@
 # Rk3399Pro-Face-Recognize-Program
-## Rk3399Pro 基于pyqt的人脸识别程序 
-### Rk3399Pro linux 配置
+## Rk3399Pro 基于pyqt的人脸检测程序 
+1. 环境配置 
+> 注意大小写
+```
+sudo dnf install python3-PyQt5
+sudo dnf install python3-opencv
+```
 
+## RK3399Pro 启动人脸检测
+```
+python3 running.py
+```
+## Rk3399Pro linux 配置
 1. 需要开机自动登录
 ```
 vim /etc/lxdm/lxdm.conf
@@ -19,7 +29,7 @@ vim ~/.config/lxsession/LXDE/autostart
 ```
 > 在autostart中加入需要自启动的命令
 ```
-python /home/toybrick/Desktop/runing.py
+python3 /home/toybrick/Desktop/running.py
 ```
 3. 修改系统的时区 
 ```

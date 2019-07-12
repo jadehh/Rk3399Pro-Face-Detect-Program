@@ -212,9 +212,11 @@ def drawBoxes(im, boxes):
     y1 = boxes[:,1]
     x2 = boxes[:,2]
     y2 = boxes[:,3]
+    face_img = im.copy()
+    #face_img = face_img[int(x1[0]):int(x2[0]),int(y1[0]):int(y2[0]),:]
     for i in range(x1.shape[0]):
         cv2.rectangle(im, (int(x1[i]), int(y1[i])), (int(x2[i]), int(y2[i])), (0,255,0), 1)
-    return im
+    return im,face_img
 
 from time import time
 _tstart_stack = []
@@ -468,7 +470,7 @@ def main():
             boundingboxes, points = detect_face(img_matlab, minsize, pnet_rknn_list, rnet_rknn, onet_rknn, threshold, False, factor)
             toc()
             tic()
-            img = drawBoxes(img, boundingboxes)
+            img,face_img = drawBoxes(img, boundingboxes)
             
             cv2.imshow('img', img)
             c = cv2.waitKey(5) & 0xff
