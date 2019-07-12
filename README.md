@@ -5,6 +5,7 @@
 ```
 sudo dnf install python3-PyQt5
 sudo dnf install python3-opencv
+sudo dnf install vim
 ```
 
 ## RK3399Pro 启动人脸检测
