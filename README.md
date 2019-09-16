@@ -1,4 +1,4 @@
-# Rk3399Pro-Face-Recognize-Program
+# Rk3399Pro-Face-Detect-Program
 ## Rk3399Pro 基于pyqt的人脸检测程序 
 1. 环境配置 
 > 注意大小写
@@ -8,7 +8,7 @@ sudo dnf install python3-opencv
 sudo dnf install vim
 ```
 
-## RK3399Pro 启动人脸检测
+## RK3399Pro 启动人脸检测,当检测到人脸时，进行开门动作
 ```
 python3 running.py
 ```
