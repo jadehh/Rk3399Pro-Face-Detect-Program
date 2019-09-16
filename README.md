@@ -7,11 +7,15 @@ sudo dnf install python3-PyQt5
 sudo dnf install python3-opencv
 sudo dnf install vim
 ```
-
-## RK3399Pro 启动人脸检测,当检测到人脸时，进行开门动作
+## 使用mtcnn的人脸检测
+````
+python detect_face.py
+````
+## 程序启动
 ```
 python3 running.py
 ```
+RK3399Pro 启动人脸检测,当检测到人脸时，进行开门动作
 ## Rk3399Pro linux 配置
 1. 需要开机自动登录
 ```
